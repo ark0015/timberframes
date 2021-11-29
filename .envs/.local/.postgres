@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=timberframes
+POSTGRES_USER=kPDOfUKdYJpvxBGyXCjPTmItkxZNcIjr
+POSTGRES_PASSWORD=EBSTY4dtNWHv9HxCpNqI8tOIJP0WDbBthH1FVlXR6swsZXWKHrxVvpH1zNCXEyWA
