@@ -38,47 +38,19 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:12
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_PASSWORD: postgres
-
-    env:
-      # postgres://user:password@host:port/database
-      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
-
     steps:
 
       - name: Checkout Code Repository
         uses: actions/checkout@v2
 
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
+      - name: Build the Stack
+        run:  docker-compose -f local.yml build
 
-      - name: Get pip cache dir
-        id: pip-cache-location
-        run: |
-          echo "::set-output name=dir::$(pip cache dir)"
+      - name: Run DB Migrations
+        run:  docker-compose -f local.yml run --rm django python manage.py migrate
 
-      - name: Cache pip Project Dependencies
-        uses: actions/cache@v2
-        with:
-          # Get the location of pip cache dir
-          path: ${{ steps.pip-cache-location.outputs.dir }}
-          # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/local.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+      - name: Run Django Tests
+        run:  docker-compose -f local.yml run django pytest
 
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements/local.txt
-
-      - name: Test with pytest
-        run:  pytest
+      - name: Tear down the Stack
+        run:  docker-compose -f local.yml down
