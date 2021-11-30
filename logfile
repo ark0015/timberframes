@@ -1,0 +1,46 @@
+2021-11-29 16:20:16.533 EST [22278] LOG:  starting PostgreSQL 13.2 on x86_64-apple-darwin13.4.0, compiled by clang version 11.1.0, 64-bit
+2021-11-29 16:20:16.537 EST [22278] LOG:  listening on IPv6 address "::1", port 5432
+2021-11-29 16:20:16.537 EST [22278] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2021-11-29 16:20:16.538 EST [22278] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2021-11-29 16:20:16.542 EST [22279] LOG:  database system was shut down at 2021-11-29 16:18:55 EST
+2021-11-29 16:20:16.547 EST [22278] LOG:  database system is ready to accept connections
+2021-11-29 16:20:37.279 EST [22310] FATAL:  role "postgres" does not exist
+2021-11-29 16:20:40.583 EST [22312] FATAL:  role "postgres" does not exist
+2021-11-29 16:21:51.383 EST [22363] FATAL:  role "postgres" does not exist
+2021-11-29 16:22:09.150 EST [22384] FATAL:  role "postgres" does not exist
+2021-11-29 16:22:12.598 EST [22386] FATAL:  role "postgres" does not exist
+2021-11-29 16:31:46.632 EST [22728] FATAL:  database "andrewkaiser" does not exist
+2021-11-29 16:36:24.428 EST [22845] ERROR:  role "postgres" does not exist
+2021-11-29 16:36:24.428 EST [22845] STATEMENT:  ALTER USER postgres PASSWORD 'md5e8a48653851e28c69d0506508fb27fc5'
+2021-11-29 16:40:16.937 EST [22280] ERROR:  could not access status of transaction 0
+2021-11-29 16:40:16.937 EST [22280] DETAIL:  Could not open file "pg_xact/0000": No such file or directory.
+2021-11-29 16:40:17.938 EST [22280] ERROR:  could not access status of transaction 0
+2021-11-29 16:40:17.938 EST [22280] DETAIL:  Could not open file "pg_xact/0000": No such file or directory.
+2021-11-29 16:40:18.312 EST [22278] LOG:  could not open file "postmaster.pid": No such file or directory
+2021-11-29 16:40:18.312 EST [22278] LOG:  performing immediate shutdown because data directory lock file is invalid
+2021-11-29 16:40:18.312 EST [22278] LOG:  received immediate shutdown request
+2021-11-29 16:40:18.312 EST [22278] LOG:  could not open file "postmaster.pid": No such file or directory
+2021-11-29 16:40:18.312 EST [22283] WARNING:  terminating connection because of crash of another server process
+2021-11-29 16:40:18.312 EST [22283] DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+2021-11-29 16:40:18.312 EST [22283] HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+2021-11-29 16:40:18.312 EST [22284] LOG:  could not open temporary statistics file "pg_stat/global.tmp": No such file or directory
+2021-11-29 16:40:18.943 EST [22278] LOG:  database system is shut down
+2021-11-29 20:01:35.469 EST [19690] LOG:  starting PostgreSQL 14.1 on x86_64-apple-darwin13.4.0, compiled by clang version 11.1.0, 64-bit
+2021-11-29 20:01:35.473 EST [19690] LOG:  listening on IPv6 address "::1", port 5432
+2021-11-29 20:01:35.473 EST [19690] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2021-11-29 20:01:35.474 EST [19690] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2021-11-29 20:01:35.478 EST [19691] LOG:  database system was shut down at 2021-11-29 20:01:22 EST
+2021-11-29 20:01:35.483 EST [19690] LOG:  database system is ready to accept connections
+2021-11-29 20:02:48.998 EST [19750] FATAL:  role "postgres" does not exist
+2021-11-29 20:02:53.381 EST [19752] FATAL:  role "postgres" does not exist
+2021-11-29 20:04:41.069 EST [19826] FATAL:  role "postgres" does not exist
+2021-11-30 09:33:16.128 EST [21972] FATAL:  database "andrewkaiser" does not exist
+2021-11-30 09:34:42.628 EST [21990] ERROR:  syntax error at or near "/" at character 1
+2021-11-30 09:34:42.628 EST [21990] STATEMENT:  /du
+	CREATE ROLE postgres
+	CREATE ROLE postgres;
+2021-11-30 09:38:38.906 EST [21990] ERROR:  syntax error at or near "DROP" at character 44
+2021-11-30 09:38:38.906 EST [21990] STATEMENT:  ALTER ROLE andrewkaiser RENAME TO postgres
+	DROP ROLE postgres;
+2021-11-30 09:38:52.914 EST [21990] ERROR:  session user cannot be renamed
+2021-11-30 09:38:52.914 EST [21990] STATEMENT:  ALTER ROLE andrewkaiser RENAME TO postgres;

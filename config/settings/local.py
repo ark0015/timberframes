@@ -8,7 +8,7 @@ DEBUG = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env(
     "DJANGO_SECRET_KEY",
-    default="OtXMFGrsuKC80PRctG0t5ynsH97y8Tf3sOti6kVgixhBoUGaXbKSi5NapH8SXvhK",
+    default="9Iu6UajluZp2kpnLBP3QXpZpHgePcGhG4HJlyBd59DEDo9G9qJ1OCEmJBFEP7uEB",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
@@ -49,7 +49,11 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#internal-ips
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
+if env("USE_DOCKER") == "yes":
+    import socket
 
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS += [".".join(ip.split(".")[:-1] + ["1"]) for ip in ips]
 
 # django-extensions
 # ------------------------------------------------------------------------------
