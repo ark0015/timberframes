@@ -1,17 +1,21 @@
+from django.core.management.utils import get_random_secret_key
+
 from .base import *  # noqa
 from .base import env
 
 # GENERAL
 # ------------------------------------------------------------------------------
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = True
+DEBUG = env("DEBUG", "False") == "True"
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-SECRET_KEY = env(
-    "DJANGO_SECRET_KEY",
-    default="9Iu6UajluZp2kpnLBP3QXpZpHgePcGhG4HJlyBd59DEDo9G9qJ1OCEmJBFEP7uEB",
-)
+# default="9Iu6UajluZp2kpnLBP3QXpZpHgePcGhG4HJlyBd59DEDo9G9qJ1OCEmJBFEP7uEB",
+
+SECRET_KEY = env("DJANGO_SECRET_KEY", default=get_random_secret_key())
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+# ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,0.0.0.0").split(",")
 
 # CACHES
 # ------------------------------------------------------------------------------

@@ -11,11 +11,7 @@ from django.urls import reverse
 from timberframes.users.forms import UserChangeForm
 from timberframes.users.models import User
 from timberframes.users.tests.factories import UserFactory
-from timberframes.users.views import (
-    UserRedirectView,
-    UserUpdateView,
-    user_detail_view,
-)
+from timberframes.users.views import UserRedirectView, UserUpdateView, user_detail_view
 
 pytestmark = pytest.mark.django_db
 
