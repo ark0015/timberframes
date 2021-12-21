@@ -1,0 +1,7 @@
+# General
+# ------------------------------------------------------------------------------
+USE_DOCKER=yes
+IPYTHONDIR=/app/.ipython
+DJANGO_READ_DOT_ENV_FILE=True
+DEBUG=True
+DJANGO_SECRET_KEY=9Iu6UajluZp2kpnLBP3QXpZpHgePcGhG4HJlyBd59DEDo9G9qJ1OCEmJBFEP7uEB
