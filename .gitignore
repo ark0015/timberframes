@@ -279,4 +279,5 @@ timberframes/media/
 ### Additions
 logfile
 config/settings/*
+timberframes_db/
 #config/settings/local.py
