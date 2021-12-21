@@ -274,10 +274,8 @@ timberframes/media/
 .pytest_cache/
 .env
 .envs/*
-.envs/.local/
+!.envs/.local/
 
 ### Additions
 logfile
-config/settings/*
 timberframes_db/
-#config/settings/local.py
