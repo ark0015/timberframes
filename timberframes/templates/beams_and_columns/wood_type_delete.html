@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <h1>Delete post</h1>
+  <form action="" method="post">{% csrf_token %}
+  <p>Are you sure you want to delete "{{ wood_type.wood_name }}"?</p>
+  <input type="submit" value="Confirm"> </form>
+  <a href="{% url 'wood_type_detail' wood_type.pk %}">Cancel</a>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Beam and Column Calculator{% endblock %}
+
+{% block content %}
+<h1>{{ wood_type.wood_name }}</h1>
+{% for name, value in wood_type.get_fields %}
+  {% if name not in '[id,wood_name]' %}
+    {% if value %}
+      {{ name }} :  {{ value }}
+      <br>
+    {% endif %}
+  {% endif %}
+{% endfor %}
+<a href="{% url 'wood_type_edit' wood_type.pk %}">+ Edit Wood Type</a>
+<p><a href="{% url 'wood_type_delete' wood_type.pk %}">+ Delete Wood Type</a></p>
+{% endblock content %}

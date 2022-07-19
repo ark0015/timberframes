@@ -1,14 +1,34 @@
 from django.urls import path
 
-from timberframes.users.views import (
-    user_detail_view,
-    user_redirect_view,
-    user_update_view,
+from .views import (
+    BeamAndColumnFormView,
+    WoodTypeDeleteView,
+    WoodTypeDetailView,
+    WoodTypeFormView,
+    WoodTypeListView,
+    WoodTypeUpdateView,
 )
 
-app_name = "users"
 urlpatterns = [
-    path("~redirect/", view=user_redirect_view, name="redirect"),
-    path("~update/", view=user_update_view, name="update"),
-    path("<str:username>/", view=user_detail_view, name="detail"),
+    # path("", view=WoodTypeListView.as_view(), name="home"),
+    path("", view=BeamAndColumnFormView.as_view(), name="home"),
+    # path("wood_choice", view=WoodTypeFormView.as_view(), name="wood_choice"),
+    # path("wood_type/", view=WoodTypeFormView.as_view(), name="wood_type"),
+    path("wood_type/", view=WoodTypeListView.as_view(), name="wood_type_list"),
+    path("wood_type/new", view=WoodTypeFormView.as_view(), name="wood_type_new"),
+    path(
+        "wood_type/<int:pk>/",
+        WoodTypeDetailView.as_view(),
+        name="wood_type_detail",
+    ),
+    path(
+        "wood_type/<int:pk>/edit",
+        WoodTypeUpdateView.as_view(),
+        name="wood_type_edit",
+    ),
+    path(
+        "wood_type/<int:pk>/delete",
+        view=WoodTypeDeleteView.as_view(),
+        name="wood_type_delete",
+    ),
 ]

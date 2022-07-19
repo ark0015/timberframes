@@ -3,14 +3,14 @@ import numpy as np
 
 class Support_Type:
     def __init__(
-        self, support_type, wood_type, depth, breadth, length, mod_of_elast, **kwargs
+        self, support_type, lumber_type, depth, breadth, length, mod_of_elast, **kwargs
     ):
         """Used to cover all support types: beams, columns, and thier combination
         Parameters
         ----------
         support_type : str
             Type of structure to be used {"beam", "column", "beam_column"}
-        wood_type : str
+        lumber_type : str
             Type of wood to be used {"lumber", "glulam", "log"}
         depth : float
             depth of support (inches)
@@ -28,10 +28,10 @@ class Support_Type:
                 "support_type can only be 'beam', 'column', or 'beam_column'."
             )
 
-        if wood_type.lower in ["lumber", "glulam", "log"]:
-            self.wood_type = wood_type.lower
+        if lumber_type.lower in ["lumber", "glulam", "log"]:
+            self.lumber_type = lumber_type.lower
         else:
-            raise ValueError("wood_type can only be 'log', 'lumber', or 'glulam'.")
+            raise ValueError("lumber_type can only be 'log', 'lumber', or 'glulam'.")
 
         self.depth = depth
         self.breadth = breadth
@@ -46,18 +46,18 @@ class Support_Type:
             0.25 for visually graded lumber
             0.1 for structural glued laminated timber
         """
-        if self.wood_type == "lumber":
+        if self.lumber_type == "lumber":
             CoVE = 0.25
             E_05 = self.mod_of_elast * (1 - 1.645 * CoVE)
             self.mod_of_elast_min = 1.03 * E_05 / 1.66
-        elif self.wood_type == "glulam":
+        elif self.lumber_type == "glulam":
             CoVE = 0.1
             E_05 = self.mod_of_elast * (1 - 1.645 * CoVE)
             self.mod_of_elast_min = 1.05 * E_05 / 1.66
-        elif self.wood_type == "log":
+        elif self.lumber_type == "log":
             raise NotImplementedError()
         else:
-            raise ValueError("wood_type can only be 'log', 'lumber', or 'glulam'.")
+            raise ValueError("lumber_type can only be 'log', 'lumber', or 'glulam'.")
 
     def effective_length(self, l_u, K_e):
         """Can also be found in table 3.4.3.1.1-1 pg. 80
@@ -118,7 +118,7 @@ class Support_Type:
         Parameters
         ----------
         l_u : the unbraced length
-        l_e : effective length if "beam"
+        l_e : effective length of "beam"
         K_e : Effective Column Length Factor for various bracing (see Table 3.4.3.9.2-1 pg. 89)
         k : The value of k is given in Table 3.4.3.1.2-1 for select cases
              and can be conservatively taken as 1.72 for all other cases.
@@ -171,7 +171,7 @@ class Support_Type:
         ----------
         l_e : effective length in bending found in table 3.4.3.1.1-1
         E_min_prime :  adjusted modulus of elasticity for beam and column stability calculations
-        wood_type : Used to determine scaling and slenderness ratio
+        lumber_type : Used to determine scaling and slenderness ratio
         structure_type : Used to select either "beam" or "column"
         """
         # print(f"Using structure type: {structure_type}")
@@ -207,7 +207,7 @@ class Support_Type:
 
         return scale * E_min_prime / (s_r ** 2)
 
-    def stability_factor(self, F_E, F_star, wood_type="log", structure_type="beam"):
+    def stability_factor(self, F_E, F_star, lumber_type="log", structure_type="beam"):
         """
         Parameters
         ----------
@@ -217,7 +217,7 @@ class Support_Type:
             'column' : reference compression design value multiplied by all applicable adjustment factors except C_P
             'beam' : reference bending design value multiplied by all applicable adjustment factors
                  except Cfu, CL, CV, and CI
-        wood_type : Used to determine "c":
+        lumber_type : Used to determine "c":
             "lumber" = 0.8 for sawn lumber
             "log" = 0.85 for round timber poles and piles
             "glulam" = 0.90 for structural glued laminated timber
@@ -225,14 +225,16 @@ class Support_Type:
         """
         # print(f"Using structure type: {structure_type}")
         if structure_type == "column":
-            if self.wood_type == "log":
+            if self.lumber_type == "log":
                 c = 0.8
-            elif self.wood_type == "lumber":
+            elif self.lumber_type == "lumber":
                 c = 0.85
-            elif self.wood_type == "glulam":
+            elif self.lumber_type == "glulam":
                 c = 0.9
             else:
-                raise ValueError("wood_type can only be 'log', 'lumber', or 'glulam'.")
+                raise ValueError(
+                    "lumber_type can only be 'log', 'lumber', or 'glulam'."
+                )
 
             first_factor = (1 + F_E / F_star) / 2.0 / c
             second_factor = np.sqrt(first_factor ** 2 - F_E / F_star / c)

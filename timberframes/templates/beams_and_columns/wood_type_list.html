@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+	<h1>Wood Types</h1>
+	{% for wood_type in object_list %}
+		<div class="post-entry">
+			<h2><a href="{{wood_type.get_absolute_url}}">{{ wood_type.wood_name }}</a></h2>
+		</div>
+	{% endfor %}
+	<div class="nav-right">
+		<a href="{% url 'wood_type_new' %}">+ Add New Wood Type</a>
+	</div>
+{% endblock content %}

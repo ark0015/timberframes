@@ -80,7 +80,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "timberframes.users",
-    "timberframes.beams_and_columns"
+    "timberframes.beams_and_columns",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
