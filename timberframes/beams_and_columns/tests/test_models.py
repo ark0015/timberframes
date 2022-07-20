@@ -117,7 +117,7 @@ class WoodTypeDeleteTests(TestCase):
         )
 
     def test_wood_type_delete_view(self):
-        response = self.client.post(reverse("wood_type_delete", args="1"))
-        print(response)
-        print(self.wood_type_2.id)
+        response = self.client.post(
+            reverse("wood_type_delete", args=f"{self.wood_type_2.id}")
+        )
         self.assertEqual(response.status_code, 302)

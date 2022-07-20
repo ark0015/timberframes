@@ -109,7 +109,7 @@ class Support_Type:
         d : depth of beam
         b : width (breadth) of beam
         """
-        return self.breadth * (self.depth ** 3) / 12.0
+        return self.breadth * (self.depth**3) / 12.0
 
     def slenderness_ratio(
         self, l_u, l_e=0.0, K_e=0.0, k=1.73, structure_type="beam", moments={}
@@ -132,7 +132,7 @@ class Support_Type:
         elif structure_type == "beam":
             if moments:
                 eta = 1.3 * k * self.depth / l_u
-                C_e = np.sqrt(eta ** 2 + 1) - eta
+                C_e = np.sqrt(eta**2 + 1) - eta
                 if "M_max" in moments.keys():
                     C_b = (
                         12.5
@@ -151,9 +151,9 @@ class Support_Type:
                         - (2 / 3) * (moments["M_1"] / moments["M_0"])
                         - (8 / 3) * moments["M_CL"] / (moments["M_1"] + moments["M_0"])
                     )
-                return np.sqrt(1.84 * l_u * self.depth / C_b / C_e / self.breadth ** 2)
+                return np.sqrt(1.84 * l_u * self.depth / C_b / C_e / self.breadth**2)
             else:
-                return np.sqrt(l_e * self.depth / self.breadth ** 2)
+                return np.sqrt(l_e * self.depth / self.breadth**2)
         else:
             raise ValueError("structure_type can only be 'beam' or 'column'.")
 
@@ -205,7 +205,7 @@ class Support_Type:
         else:
             raise ValueError("structure_type can only be 'beam' or 'column'.")
 
-        return scale * E_min_prime / (s_r ** 2)
+        return scale * E_min_prime / (s_r**2)
 
     def stability_factor(self, F_E, F_star, lumber_type="log", structure_type="beam"):
         """
@@ -237,10 +237,10 @@ class Support_Type:
                 )
 
             first_factor = (1 + F_E / F_star) / 2.0 / c
-            second_factor = np.sqrt(first_factor ** 2 - F_E / F_star / c)
+            second_factor = np.sqrt(first_factor**2 - F_E / F_star / c)
         elif structure_type == "beam":
             first_factor = (1 + (F_E / F_star)) / 1.9
-            second_factor = np.sqrt(first_factor ** 2 - (F_E / F_star / 0.95))
+            second_factor = np.sqrt(first_factor**2 - (F_E / F_star / 0.95))
         else:
             raise ValueError("structure_type can only be 'beam' or 'column'.")
 
@@ -406,24 +406,24 @@ class Beam(Support_Type):
         """
         mom_of_inert = self.moment_of_inertia(self.depth, self.breadth)
         if load_case == 0:
-            return (w * self.length ** 3) / 3.0 / self.mod_of_elast / self.length
+            return (w * self.length**3) / 3.0 / self.mod_of_elast / self.length
         elif load_case == 1:
             return (
-                (w * a ** 2 * (3.0 * self.length - a))
+                (w * a**2 * (3.0 * self.length - a))
                 / 6.0
                 / self.mod_of_elast
                 / mom_of_inert
             )
         elif load_case == 2:
-            return (w * (self.length ** 4)) / 8.0 / self.mod_of_elast / mom_of_inert
+            return (w * (self.length**4)) / 8.0 / self.mod_of_elast / mom_of_inert
         elif load_case == 3:
-            return (w * self.length ** 4) / 30.0 / self.mod_of_elast / mom_of_inert
+            return (w * self.length**4) / 30.0 / self.mod_of_elast / mom_of_inert
         elif load_case == 4:
             return (
-                (11.0 * w * self.length ** 4) / 120.0 / self.mod_of_elast / mom_of_inert
+                (11.0 * w * self.length**4) / 120.0 / self.mod_of_elast / mom_of_inert
             )
         elif load_case == 5:
-            return (w * self.length ** 2) / 2.0 / self.mod_of_elast / mom_of_inert
+            return (w * self.length**2) / 2.0 / self.mod_of_elast / mom_of_inert
 
     def bending_stress(self, M, F_b_prime=0.0):
         """Calculates bending stress for a square beam, for nonsquare, see eqn. 4.2.1-1.
@@ -436,7 +436,7 @@ class Beam(Support_Type):
         M : bending moment due to applied loads
         F_b_prime : adjusted bending stress
         """
-        f_b = 6 * M / self.breadth / self.depth ** 2
+        f_b = 6 * M / self.breadth / self.depth**2
         if F_b_prime > 0:
             if f_b > F_b_prime:
                 print(f"{f_b} > {F_b_prime} bending stress exceeds allowable design")
@@ -547,7 +547,7 @@ class Beam(Support_Type):
             final_force = 0.0
             for force in forces.values():
                 final_force += force
-            return final_force * (self.length ** 2.0) / 8.0
+            return final_force * (self.length**2.0) / 8.0
 
 
 class Column(Support_Type):
