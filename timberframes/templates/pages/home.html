@@ -6,5 +6,6 @@
   <form class="form-vertical" method="post" action="{% url 'home' %}">{% csrf_token %}
     {{form.as_p}}
     <input type="submit" value="Save">
+    Here you go: {{form.wood_type}}
   </form>
 {% endblock %}

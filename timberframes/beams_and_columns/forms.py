@@ -12,14 +12,14 @@ class BeamAndColumnForm(ModelForm):
     class Meta:
         model = Beams_and_Columns
         fields = [
-            "wood_choice",
+            "wood_type",
             # "lumber_type",
             # "lumber_grade",
             "breadth",
             "depth",
         ]
         labels = {
-            "wood_choice": _("Wood Type"),
+            "wood_type": _("Wood Type"),
             # "lumber_type": _("Lumber Type"),
             # "lumber_grade": _("Grade"),
             # "size": _("Size"),
@@ -37,7 +37,8 @@ class WoodTypeForm(ModelForm):
         model = Wood_Type
         fields = [
             "wood_name",
-            "lumber_type" "lumber_grade",
+            "lumber_type",
+            "lumber_grade",
             # "size",
             "E",
             "E_min",

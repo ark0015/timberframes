@@ -34,7 +34,8 @@ class WoodTypeUpdateView(UpdateView):
     template_name = "beams_and_columns/wood_type_edit.html"
     fields = [
         # "wood_name",
-        "lumber_type" "grade",
+        "lumber_type",
+        "lumber_grade",
         # "size",
         "E",
         "E_min",
@@ -51,7 +52,7 @@ class WoodTypeDeleteView(DeleteView):
     model = Wood_Type
     form_class = WoodTypeForm
     template_name = "beams_and_columns/wood_type_delete.html"
-    success_url = reverse_lazy("wood_type")
+    success_url = reverse_lazy("wood_type_list")
 
 
 """Beam and Column Form"""

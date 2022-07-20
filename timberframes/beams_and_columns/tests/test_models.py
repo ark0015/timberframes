@@ -27,7 +27,9 @@ class WoodTypeTests(TestCase):
         self.assertEqual(str(self.wood_type), self.wood_type.wood_name)
 
     def test_get_absolute_url(self):
-        self.assertEqual(self.wood_type.get_absolute_url(), "/wood_type/1/")
+        self.assertEqual(
+            self.wood_type.get_absolute_url(), f"/wood_type/{self.wood_type.id}/"
+        )
 
     def test_wood_type_content(self):
         self.assertEqual(self.wood_type.wood_name, "Spruce-Pine-Fir")
@@ -43,21 +45,21 @@ class WoodTypeTests(TestCase):
         self.assertEqual(self.wood_type.F_t, 450)
 
     def test_wood_type_list_view(self):
-        response = self.client.get(reverse("home"))
+        response = self.client.get(reverse("wood_type_list"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Spruce-Pine-Fir")
-        self.assertTemplateUsed(response, "home.html")
+        self.assertTemplateUsed(response, "beams_and_columns/wood_type_list.html")
 
     def test_wood_type_detail_view(self):
-        response = self.client.get("/wood_type/1/")
+        response = self.client.get(f"/wood_type/{self.wood_type.id}/")
         no_response = self.client.get("/wood_type/100000/")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, "Spruce-Pine-Fir")
-        self.assertTemplateUsed(response, "wood_type_detail.html")
+        self.assertTemplateUsed(response, "beams_and_columns/wood_type_detail.html")
 
     def test_wood_type_create_view(self):
-        response = self.client.wood_type(
+        response = self.client.post(
             reverse("wood_type_new"),
             {
                 "wood_name": "Red Oak",
@@ -78,8 +80,8 @@ class WoodTypeTests(TestCase):
         self.assertEqual(Wood_Type.objects.last().lumber_type, "log")
 
     def test_wood_type_update_view(self):
-        response = self.client.wood_type(
-            reverse("wood_type_edit", args="1"),
+        response = self.client.post(
+            reverse("wood_type_edit", args=f"{self.wood_type.id}"),
             {
                 "lumber_type": "log",
                 "lumber_grade": "no_2",
@@ -95,6 +97,27 @@ class WoodTypeTests(TestCase):
         )
         self.assertEqual(response.status_code, 302)
 
+
+# For some reason pytest is doing things in alphabetical order which causes
+# the wood_type to be deleted before other tests use it.
+class WoodTypeDeleteTests(TestCase):
+    def setUp(self):
+        self.wood_type_2 = Wood_Type.objects.create(
+            wood_name="Spruce-Pine-Fir",
+            lumber_type="lumber",
+            lumber_grade="select_structural",
+            E=1.5e6,
+            E_min=5.5e5,
+            G=0.42,
+            F_v=135,
+            F_c=1400,
+            F_c_perp=425,
+            F_b=1250,
+            F_t=700,
+        )
+
     def test_wood_type_delete_view(self):
-        response = self.client.wood_type(reverse("wood_type_delete", args="1"))
+        response = self.client.post(reverse("wood_type_delete", args="1"))
+        print(response)
+        print(self.wood_type_2.id)
         self.assertEqual(response.status_code, 302)

@@ -12,7 +12,7 @@ from .views import (
 urlpatterns = [
     # path("", view=WoodTypeListView.as_view(), name="home"),
     path("", view=BeamAndColumnFormView.as_view(), name="home"),
-    # path("wood_choice", view=WoodTypeFormView.as_view(), name="wood_choice"),
+    # path("wood_type", view=WoodTypeFormView.as_view(), name="wood_type"),
     # path("wood_type/", view=WoodTypeFormView.as_view(), name="wood_type"),
     path("wood_type/", view=WoodTypeListView.as_view(), name="wood_type_list"),
     path("wood_type/new", view=WoodTypeFormView.as_view(), name="wood_type_new"),

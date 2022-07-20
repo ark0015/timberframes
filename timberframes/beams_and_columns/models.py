@@ -69,14 +69,14 @@ class Wood_Type(models.Model):
     # grade = models.ForeignKey("Lumber_Grade", on_delete=models.CASCADE)
     # grade = models.ManyToManyField(Lumber_Grade)
     lumber_grade = models.CharField(max_length=20, choices=LUMBER_GRADE, default="no_2")
-    E = models.DecimalField(max_digits=7, decimal_places=2)
-    E_min = models.DecimalField(max_digits=7, decimal_places=2)
-    G = models.DecimalField(max_digits=7, decimal_places=2)
-    F_v = models.DecimalField(max_digits=7, decimal_places=2)
-    F_c = models.DecimalField(max_digits=7, decimal_places=2)
-    F_c_perp = models.DecimalField(max_digits=7, decimal_places=2)
-    F_b = models.DecimalField(max_digits=7, decimal_places=2)
-    F_t = models.DecimalField(max_digits=7, decimal_places=2)
+    E = models.DecimalField(max_digits=9, decimal_places=2)
+    E_min = models.DecimalField(max_digits=9, decimal_places=2)
+    G = models.DecimalField(max_digits=3, decimal_places=2)
+    F_v = models.DecimalField(max_digits=6, decimal_places=2)
+    F_c = models.DecimalField(max_digits=6, decimal_places=2)
+    F_c_perp = models.DecimalField(max_digits=6, decimal_places=2)
+    F_b = models.DecimalField(max_digits=6, decimal_places=2)
+    F_t = models.DecimalField(max_digits=6, decimal_places=2)
 
     class Meta:
         verbose_name = "Wood Type"
@@ -140,7 +140,7 @@ class Beams_and_Columns(models.Model):
     """
     Parameters
     ----------
-    wood_choice : object
+    wood_type : object
         type of wood (oak, pine, etc.)
     lumber_types : glulam, dimensional, uncut (?)
         * Drop-down or Radial button
@@ -155,8 +155,8 @@ class Beams_and_Columns(models.Model):
             * Include units with drop-down
     """
 
-    # wood_choice = models.ManyToManyField(Wood_Type)
-    wood_choice = models.ForeignKey(
+    # wood_type = models.ManyToManyField(Wood_Type)
+    wood_type = models.ForeignKey(
         "Wood_Type", on_delete=models.CASCADE, blank=True, default=1
     )
     breadth = models.DecimalField(max_digits=5, decimal_places=2)
