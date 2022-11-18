@@ -11,7 +11,7 @@ from .widgets import BreadthDepthWidget
 class BreadthDepthField(forms.MultiValueField):
     """Field to select inches and fractions of inches for breadth and depth models"""
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         # Define one message for all fields.
 
         # description = _("Field to select inches and fractions of inches for breadth and depth models.")
@@ -49,6 +49,7 @@ class BreadthDepthField(forms.MultiValueField):
         kwargs["widget"] = BreadthDepthWidget  # MultiWidget(widgets=[])
         super().__init__(
             fields,
+            *args,
             **kwargs,
         )
 
