@@ -1,14 +1,45 @@
 {% extends "base.html" %}
-{% load static %}
+{% load crispy_forms_tags %}
+{% load beams_and_columns_extras %}
 
 {% block content %}
-	<h1>Wood Types</h1>
-	{% for wood_type in object_list %}
-		<div class="post-entry">
-			<h2><a href="{{wood_type.get_absolute_url}}">{{ wood_type.wood_name }}</a></h2>
-		</div>
-	{% endfor %}
-	<div class="nav-right">
-		<a href="{% url 'wood_type_new' %}">+ Add New Wood Type</a>
-	</div>
+    <h1>Wood Types</h1>
+    {# {% for wood_type in object_list %} #}
+    <div class="accordion" id="accordion_wood_types">
+        {% for wood_type in object_list %}
+            <div class="card w-50 text-center">
+                <div class="card-header" id="heading{{forloop.counter}}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{forloop.counter}}" aria-expanded="false" aria-controls="collapse{{forloop.counter}}" style="font-size: 100%;">
+                        {{wood_type.wood_name}}
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapse{{forloop.counter}}" class="collapse" aria-labelledby="heading{{forloop.counter}}" data-bs-parent="#accordion_wood_types">
+                    <div class="card-body">
+                        {% for name, value in wood_type.get_fields %}
+                          {% if name not in '[id,wood_name]' %}
+                            {% if value %}
+                                {% if value|is_string %}
+                                    {% get_object_field_name_verbose wood_type name %} :  {% get_object_value_name_verbose wood_type name %}
+                                    <br>
+                                {% else %}
+                                    {% get_object_field_name_verbose wood_type name %} :  {{ value }}
+                                    <br>
+                                {% endif %}
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                        <a href="{% url 'wood_type_edit' wood_type.pk %}" class="btn btn-primary">Edit</a> | <a href="{% url 'wood_type_delete' wood_type.pk %}" class="btn btn-danger ml-2">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="card w-50 text-center">
+        <div class="card-header">
+            <span class="font-weight-bold"><a href="{% url 'wood_type_new' %}">+ Add New Wood Type</a></span>
+        </div>
+    </div>
 {% endblock content %}
