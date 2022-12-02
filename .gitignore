@@ -289,7 +289,6 @@ production*
 .pylintrc
 .readthedocs.yml
 Procfile/
-local.yml
 production.yml
 config/
 compose/
