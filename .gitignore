@@ -63,12 +63,6 @@ target/
 .python-version
 
 
-
-# Environments
-.venv
-venv/
-ENV/
-
 # Rope project settings
 .ropeproject
 
@@ -272,11 +266,33 @@ tags
 timberframes/media/
 
 .pytest_cache/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 .env
 .envs/*
-!.envs/.local/
 
 ### Additions
 logfile
 timberframes_db/
 .ipython/
+
+production*
+
+.gitattributes
+.pylintrc
+.readthedocs.yml
+Procfile/
+local.yml
+production.yml
+config/
+compose/
+locale/
+pytest.ini
+runtime.txt
