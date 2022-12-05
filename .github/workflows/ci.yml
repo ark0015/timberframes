@@ -34,10 +34,13 @@ jobs:
       - name: Install and Run Pre-commit
         uses: pre-commit/action@v2.0.3
 
-  create-envfile:
+  # With no caching at all the entire ci process takes 4m 30s to complete!
+  pytest:
     runs-on: ubuntu-latest
+    needs: create-envfile
 
     steps:
+
       - name: Make Django envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
@@ -59,12 +62,6 @@ jobs:
           envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           file_name: .postgres
           fail_on_empty: false
-
-  # With no caching at all the entire ci process takes 4m 30s to complete!
-  pytest:
-    runs-on: ubuntu-latest
-
-    steps:
 
       - name: Checkout Code Repository
         uses: actions/checkout@v3
