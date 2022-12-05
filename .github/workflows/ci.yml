@@ -37,7 +37,6 @@ jobs:
   # With no caching at all the entire ci process takes 4m 30s to complete!
   pytest:
     runs-on: ubuntu-latest
-    needs: create-envfile
 
     steps:
       - name: Make Django envfile
