@@ -291,7 +291,8 @@ production*
 Procfile/
 production.yml
 config/
-compose/
+compose/local
+compose/production
 locale/
 pytest.ini
 runtime.txt
