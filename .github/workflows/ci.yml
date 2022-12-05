@@ -40,7 +40,6 @@ jobs:
     needs: create-envfile
 
     steps:
-
       - name: Make Django envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
