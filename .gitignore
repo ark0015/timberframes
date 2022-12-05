@@ -290,6 +290,7 @@ production*
 .readthedocs.yml
 Procfile/
 production.yml
+local.yml
 config/
 compose/local
 compose/production
