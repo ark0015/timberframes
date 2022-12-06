@@ -9,7 +9,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/CI/django/Dockerfile
-    image: timberframes_CI_django
+    image: timberframes_ci_django
     container_name: django
     depends_on:
       - postgres
@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/CI/postgres/Dockerfile
-    image: timberframes_CI_postgres
+    image: timberframes_ci_postgres
     container_name: postgres
     volumes:
       - CI_postgres_data:/var/lib/postgresql/data:Z
@@ -34,7 +34,7 @@ services:
       - ./.env
 
   docs:
-    image: timberframes_CI_docs
+    image: timberframes_ci_docs
     container_name: docs
     build:
       context: .

@@ -59,12 +59,6 @@ jobs:
           file_name: .env
           fail_on_empty: false
 
-      - name: "Check file existence"
-        run: |
-          echo "$GITHUB_CONTEXT"
-          ls -la
-          find -iname ".env"
-
       - name: Build the Stack
         run:  docker-compose -f docker-compose.ci.yml build
 
