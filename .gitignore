@@ -292,8 +292,6 @@ production*
 Procfile/
 production.yml
 local.yml
-config/settings/base.py
-config/settings/local.py
 config/settings/production.py
 compose/local
 compose/production
