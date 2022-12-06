@@ -55,17 +55,22 @@ jobs:
           file_name: .env
           fail_on_empty: false
 
+      - name: "Check file existence"
+        uses: andstor/file-existence-action@v2
+        with:
+          files: ".env"
+
       - name: Checkout Code Repository
         uses: actions/checkout@v3
 
       - name: Build the Stack
-        run:  docker-compose -f --env-file .env docker-compose.ci.yml build
+        run:  docker-compose -f docker-compose.ci.yml build
 
       - name: Run DB Migrations
-        run:  docker-compose -f --env-file .env docker-compose.ci.yml run --rm django python manage.py migrate
+        run:  docker-compose -f docker-compose.ci.yml run --rm django python manage.py migrate
 
       - name: Run Django Tests
-        run:  docker-compose -f --env-file .env docker-compose.ci.yml run django pytest
+        run:  docker-compose -f docker-compose.ci.yml run django pytest
 
       - name: Tear down the Stack
-        run:  docker-compose -f --env-file .env docker-compose.ci.yml down
+        run:  docker-compose -f docker-compose.ci.yml down
