@@ -56,9 +56,9 @@ jobs:
           fail_on_empty: false
 
       - name: "Check file existence"
-        uses: andstor/file-existence-action@v2
-        with:
-          files: ".env"
+        run: |
+          ls
+          find -iname ".env"
 
       - name: Checkout Code Repository
         uses: actions/checkout@v3
