@@ -57,7 +57,7 @@ jobs:
 
       - name: "Check file existence"
         run: |
-          ls
+          pwd
           find -iname ".env"
 
       - name: Checkout Code Repository
