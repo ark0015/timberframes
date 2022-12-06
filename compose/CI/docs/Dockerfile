@@ -24,7 +24,7 @@ COPY ./requirements /requirements
 # All imports needed for autodoc.
 RUN pip install -r /requirements/local.txt -r /requirements/production.txt
 
-COPY ./compose/local/docs/start /start-docs
+COPY ./compose/CI/docs/start /start-docs
 RUN sed -i 's/\r$//g' /start-docs
 RUN chmod +x /start-docs
 
