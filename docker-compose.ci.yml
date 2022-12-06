@@ -15,9 +15,6 @@ services:
       - postgres
     volumes:
       - .:/app:z
-    env_file:
-      - ./.django
-      - ./.postgres
     ports:
       - "8000:8000"
     command: /start
@@ -31,8 +28,6 @@ services:
     volumes:
       - CI_postgres_data:/var/lib/postgresql/data:Z
       - CI_postgres_data_backups:/backups:z
-    env_file:
-      - ./.postgres
 
   docs:
     image: timberframes_CI_docs
@@ -40,8 +35,6 @@ services:
     build:
       context: .
       dockerfile: ./compose/CI/docs/Dockerfile
-    env_file:
-      - ./.django
     volumes:
       - ./docs:/docs:z
       - ./config:/app/config:z

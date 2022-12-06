@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Make Django envfile
+      - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DEBUG: false
@@ -47,18 +47,12 @@ jobs:
           envkey_DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           envkey_IPYTHONDIR: /app/.ipython
           envkey_DJANGO_READ_DOT_ENV_FILE: true
-          file_name: ./.django
-          fail_on_empty: false
-
-      - name: Make Postgres envfile
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
           envkey_POSTGRES_HOST: postgres
           envkey_POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
           envkey_POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           envkey_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          file_name: ./.postgres
+          file_name: .env
           fail_on_empty: false
 
       - name: Checkout Code Repository
