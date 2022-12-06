@@ -284,6 +284,7 @@ timberframes_db/
 .ipython/
 
 production*
+!production.txt
 
 .gitattributes
 .pylintrc
