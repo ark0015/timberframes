@@ -47,7 +47,7 @@ jobs:
           envkey_DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           envkey_IPYTHONDIR: /app/.ipython
           envkey_DJANGO_READ_DOT_ENV_FILE: true
-          file_name: .django
+          file_name: ${{ github.GITHUB_WORKSPACE }}/.django
           fail_on_empty: false
 
       - name: Make Postgres envfile
@@ -58,20 +58,28 @@ jobs:
           envkey_POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           envkey_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          file_name: .postgres
+          file_name: ${{ github.GITHUB_WORKSPACE }}/.postgres
           fail_on_empty: false
 
       - name: Checkout Code Repository
         uses: actions/checkout@v3
 
       - name: Build the Stack
+        env:
+          env_dir: '${{ github.GITHUB_WORKSPACE }}'
         run:  docker-compose -f docker-compose.ci.yml build
 
       - name: Run DB Migrations
+        env:
+          env_dir: '${{ github.GITHUB_WORKSPACE }}'
         run:  docker-compose -f docker-compose.ci.yml run --rm django python manage.py migrate
 
       - name: Run Django Tests
+        env:
+          env_dir: '${{ github.GITHUB_WORKSPACE }}'
         run:  docker-compose -f docker-compose.ci.yml run django pytest
 
       - name: Tear down the Stack
+        env:
+          env_dir: '${{ github.GITHUB_WORKSPACE }}'
         run:  docker-compose -f docker-compose.ci.yml down
