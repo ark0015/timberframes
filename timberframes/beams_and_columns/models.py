@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from .fields import BreadthDepthField
+# from .fields import BreadthDepthField
 
 # from django.contrib import admin
 
@@ -269,8 +269,9 @@ class Wood_Type_2(models.Model):
         ]
 
 
+"""
 class BreadthDepthModelField(models.Field):
-    """Model Field to select inches and fractions of inches for breadth and depth models"""
+    # Model Field to select inches and fractions of inches for breadth and depth models
 
     def formfield(self, **kwargs):
         defaults = {"form_class": BreadthDepthField}
@@ -279,6 +280,7 @@ class BreadthDepthModelField(models.Field):
 
     def db_type(self, connection):
         return "BreadthDepthField"
+"""
 
 
 class Beams_and_Columns(models.Model):
@@ -308,8 +310,18 @@ class Beams_and_Columns(models.Model):
         default=1,
         verbose_name="Wood Type",
     )
-    breadth = BreadthDepthModelField()
-    depth = BreadthDepthModelField()
+    # breadth = BreadthDepthModelField()
+    # depth = BreadthDepthModelField()
+    breadth = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        verbose_name="Breadth of beam/column",
+    )
+    depth = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        verbose_name="Depth of beam/column",
+    )
 
     class Meta:
         verbose_name = _("Beam and Column Calculation")
