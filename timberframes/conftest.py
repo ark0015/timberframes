@@ -5,8 +5,9 @@ from timberframes.users.models import User
 from timberframes.users.tests.factories import UserFactory
 
 
+@pytest.fixture
 def pytest_configure():
-    settings.configure(DATABASES=...)
+    settings.configure()
 
 
 @pytest.fixture(autouse=True)
