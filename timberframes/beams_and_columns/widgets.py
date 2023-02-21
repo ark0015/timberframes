@@ -9,7 +9,6 @@ class BreadthDepthWidget(forms.MultiWidget):
     """Widget to have a separate inch and fraction of an inch selection"""
 
     def __init__(self, attrs=None):
-
         i_selections = []
         for x in np.arange(0, 16):
             if x == 1:
