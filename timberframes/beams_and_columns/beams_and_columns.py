@@ -21,21 +21,23 @@ class Support_Type:
         mod_of_elast: float
             modulus of elasticity (psi)
         """
-        if support_type.lower in ["beam", "column", "beam_column"]:
+
+        if support_type in ["beam", "column", "beam_column"]:
             self.support_type = support_type
         else:
             raise ValueError(
                 "support_type can only be 'beam', 'column', or 'beam_column'."
             )
 
-        if lumber_type.lower in ["lumber", "glulam", "log"]:
-            self.lumber_type = lumber_type.lower
+        if lumber_type in ["lumber", "glulam", "log"]:
+            self.lumber_type = lumber_type
         else:
             raise ValueError("lumber_type can only be 'log', 'lumber', or 'glulam'.")
 
-        self.depth = depth
-        self.breadth = breadth
-        self.mod_of_elast = mod_of_elast
+        self.depth = np.float(depth)
+        self.breadth = np.float(breadth)
+        self.length = np.float(length)
+        self.mod_of_elast = np.float(mod_of_elast)
 
     def modulus_of_elasticity(self):
         """
@@ -58,16 +60,6 @@ class Support_Type:
             raise NotImplementedError()
         else:
             raise ValueError("lumber_type can only be 'log', 'lumber', or 'glulam'.")
-
-    def effective_length(self, l_u, K_e):
-        """Can also be found in table 3.4.3.1.1-1 pg. 80
-        Parameters
-        ----------
-        l_u : The unbraced length of a compression member, i.e. the distance between two points along its length,
-            between which the member is not prevented from buckling.
-        K_e : Effective Column Length Factor for various bracing (see Table 3.4.3.9.2-1 pg. 89)
-        """
-        return K_e * l_u
 
     def estimated_shrinkage(self, S_0, m_i, m_f):
         """Estimates Wood Shrinkage.
@@ -110,52 +102,6 @@ class Support_Type:
         b : width (breadth) of beam
         """
         return self.breadth * (self.depth**3) / 12.0
-
-    def slenderness_ratio(
-        self, l_u, l_e=0.0, K_e=0.0, k=1.73, structure_type="beam", moments={}
-    ):
-        """
-        Parameters
-        ----------
-        l_u : the unbraced length
-        l_e : effective length of "beam"
-        K_e : Effective Column Length Factor for various bracing (see Table 3.4.3.9.2-1 pg. 89)
-        k : The value of k is given in Table 3.4.3.1.2-1 for select cases
-             and can be conservatively taken as 1.72 for all other cases.
-        structure_type : Used to select either "beam" or "column"
-        moments : Used to calculate slenderness_ratio with method of moments on beam Equation 3.4.3.1.2-2
-        """
-        if structure_type == "column":
-            if l_e == 0.0:
-                l_e = self.effective_length(l_u, K_e)
-            return l_e / self.depth
-        elif structure_type == "beam":
-            if moments:
-                eta = 1.3 * k * self.depth / l_u
-                C_e = np.sqrt(eta**2 + 1) - eta
-                if "M_max" in moments.keys():
-                    C_b = (
-                        12.5
-                        * moments["M_max"]
-                        / (
-                            3 * moments["M_a"]
-                            + 4 * moments["M_b"]
-                            + 3 * moments["M_c"]
-                            + 2.5 * moments["M_max"]
-                        )
-                    )
-                else:
-                    # Eqn. 3.4.3.1.2-5 for top braced beams?
-                    C_b = (
-                        3.0
-                        - (2 / 3) * (moments["M_1"] / moments["M_0"])
-                        - (8 / 3) * moments["M_CL"] / (moments["M_1"] + moments["M_0"])
-                    )
-                return np.sqrt(1.84 * l_u * self.depth / C_b / C_e / self.breadth**2)
-            else:
-                return np.sqrt(l_e * self.depth / self.breadth**2)
-        else:
-            raise ValueError("structure_type can only be 'beam' or 'column'.")
 
     def critical_buckling_design_value(
         self,
@@ -385,6 +331,88 @@ class Beam(Support_Type):
         # Wood Type to get all the properties
         # Extract this from choice/database?
 
+    def effective_length(self, load_placement="uniform", single_span_beam=False):
+        """Only for cantilevers! Can also be found in table 3.4.3.1.1-1 pg. 80 in
+        American Institute of Timber Construction Wiley (2012)
+
+        Parameters
+        ----------
+        load_placement : str, optional {uniform,
+            concentrated_end, concentrated_center_no_support, concentrated_center_with_support}
+            End conditions of force distribution
+        single_span_beam : str, optional {True,False}
+
+        Notes
+        -----
+        Other specifications for different load/support combinations found in
+        Table 3.4.3.1.1-1 pg. 80 in American Institute of Timber Construction Wiley (2012)
+        """
+
+        if load_placement == "uniform":
+            if self.length / self.depth < 7.0:
+                if single_span_beam:
+                    return 2.06 * self.length
+                else:
+                    return 1.33 * self.length
+            else:
+                if single_span_beam:
+                    return 1.63 * self.length + 3 * self.depth
+                else:
+                    return 0.9 * self.length + 3 * self.depth
+        elif load_placement == "concentrated_end":
+            if self.length / self.depth < 7.0:
+                return 1.87 * self.length
+            else:
+                return 1.44 * self.length + 3 * self.depth
+        elif load_placement == "concentrated_center_no_support" and single_span_beam:
+            if self.length / self.depth < 7.0:
+                return 1.8 * self.length
+            else:
+                return 1.37 * self.length + 3 * self.depth
+        elif load_placement == "concentrated_center_with_support" and single_span_beam:
+            return 1.11 * self.length
+        else:
+            raise ValueError(
+                "load_placement must be a value in: {'uniform', 'concentrated_end',\
+                 'concentrated_center_no_support', 'concentrated_center_with_support',} \
+                and/or single_span_beam must be true if load_placement other than 'uniform' or 'concentrated_end'."
+            )
+
+    def slenderness_ratio(self, k=1.72, moments={}):
+        """
+        Parameters
+        ----------
+        k : The value of k is given in Table 3.4.3.1.2-1 for select cases
+             and can be conservatively taken as 1.72 for all other cases.
+        moments : Used to calculate slenderness_ratio with method of moments on beam Equation 3.4.3.1.2-2
+        """
+        if moments:
+            eta = 1.3 * k * self.depth / self.length
+            C_e = np.sqrt(eta**2 + 1) - eta
+            if "M_max" in moments.keys():
+                C_b = (
+                    12.5
+                    * moments["M_max"]
+                    / (
+                        3 * moments["M_a"]
+                        + 4 * moments["M_b"]
+                        + 3 * moments["M_c"]
+                        + 2.5 * moments["M_max"]
+                    )
+                )
+            else:
+                # Eqn. 3.4.3.1.2-5 for top braced beams?
+                C_b = (
+                    3.0
+                    - (2 / 3) * (moments["M_1"] / moments["M_0"])
+                    - (8 / 3) * moments["M_CL"] / (moments["M_1"] + moments["M_0"])
+                )
+            return np.sqrt(
+                1.84 * self.length * self.depth / C_b / C_e / self.breadth**2
+            )
+        else:
+            return np.sqrt(self.effective_length() * self.depth / self.breadth**2)
+
     def flat_use_or_size_factor(self):
         """The size factor for 5 in. × 5 in. and larger sawn timbers of depth greater than 12 in.
         with loads applied to the narrow face is determined by Equation 3.4.3.2-1
@@ -488,7 +516,7 @@ class Beam(Support_Type):
         F_bx_star :
         C_V :
         C_L :
-        f_c : flexural compression stress
+        f_c : flexural compression stress (compression stress parallel-to-grain)
         """
         if f_c >= F_bx_star * (1 - C_V):
             print(
@@ -510,7 +538,7 @@ class Beam(Support_Type):
             )
         return F_bx_prime
 
-    def get_beam_moments(self, forces={}):
+    def beam_moments(self, forces={}):
         """Used to get moments on beam Equation 3.4.3.1.2-2
         Parameters
         ----------
@@ -555,6 +583,80 @@ class Column(Support_Type):
         super().__init__(*args, **kwargs)
         # Wood Type to get all the properties
         # Extract this from choice/database?
+
+    def effective_length(
+        self, column_bracing="both_trans_fixed_rot_fixed", design_K_e="recommended"
+    ):
+        """Can also be found in table 3.4.3.1.1-1 pg. 80
+        Parameters
+        ----------
+        column_bracing : str, optional {both_trans_fixed_rot_fixed,
+            both_trans_fixed_rot_free, top_trans_free_rot_free,
+            top_trans_free_rot_fixed, top_trans_fixed_rot_free, top_trans_free_rot_fixed_bot_rot_free_trans_fixed}
+            End conditions of column top and bottom
+        design_K_e : str, optional {recommended, theoretical}
+            Whethere conditions are ideal (theoretical), or approximated (recommended)
+        Notes
+        -----
+        K_e : Effective Column Length Factor for various bracing (see Table 3.4.3.9.2-1 pg. 89) of
+        American Institute of Timber Construction Wiley (2012)
+        """
+
+        if column_bracing == "both_trans_fixed_rot_fixed":
+            if design_K_e == "recommended":
+                K_e = 0.65
+            elif design_K_e == "theoretical":
+                K_e = 0.5
+        elif column_bracing == "both_trans_fixed_rot_free":
+            K_e = 1.0
+        elif column_bracing == "top_trans_fixed_rot_free":
+            if design_K_e == "recommended":
+                K_e = 0.8
+            elif design_K_e == "theoretical":
+                K_e = 0.7
+        elif column_bracing == "top_trans_free_rot_fixed":
+            if design_K_e == "recommended":
+                K_e = 1.2
+            elif design_K_e == "theoretical":
+                K_e = 1.0
+        elif column_bracing == "top_trans_free_rot_free":
+            if design_K_e == "recommended":
+                K_e = 2.1
+            elif design_K_e == "theoretical":
+                K_e = 2.0
+        elif column_bracing == "top_trans_free_rot_fixed_bot_rot_free_trans_fixed":
+            if design_K_e == "recommended":
+                K_e = 2.4
+            elif design_K_e == "theoretical":
+                K_e = 2.0
+        else:
+            raise ValueError(
+                "column_bracing must be a value in: {'both_trans_fixed_rot_fixed',\
+                 'both_trans_fixed_rot_free', 'top_trans_free_rot_free', 'top_trans_free_rot_fixed',\
+                  'top_trans_fixed_rot_free', 'top_trans_free_rot_fixed_bot_rot_free_trans_fixed'}."
+            )
+
+        return K_e * self.length
+
+    def slenderness_ratio(
+        self, column_bracing="both_trans_fixed_rot_fixed", design_K_e="recommended"
+    ):
+        """
+        Parameters
+        ----------
+        column_bracing : str, optional {both_trans_fixed_rot_fixed,
+            both_trans_fixed_rot_free, top_trans_free_rot_free, top_trans_free_rot_fixed,
+            top_trans_fixed_rot_free, top_trans_free_rot_fixed_bot_rot_free_trans_fixed}
+            End conditions of column top and bottom
+        design_K_e : str, optional {recommended, theoretical}
+            Whethere conditions are ideal (theoretical), or approximated (recommended)
+        """
+        return (
+            self.effective_length(
+                self.length, column_bracing=column_bracing, design_K_e=design_K_e
+            )
+            / self.depth
+        )
 
     def column_design_criteria(self, P, A_g, A_n, F_c_prime, F_c_star):
         """

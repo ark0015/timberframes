@@ -3,21 +3,9 @@
 
 {% block content %}
     <h1>Beam and Column Calculator</h1>
-    {% comment %}
-    <form>
-        {% csrf_token %}
-        <select class="form-select w-50 text-center" aria-label="Wood Type Selection">
-            {% for w_t in form.wood_type %}
-                {{w_t}}
-            {% endfor %}
-        </select>
-    </form>
-    {% endcomment %}
-    {# {% comment %} #}
-    <form class="form-vertical" method="post" action="{% url 'home' %}">
+    <form class="form-vertical" method="post" action="" >
         {% csrf_token %}
         {{ form|crispy }}
-        <button class="btn btn-success" type="submit">Save</button>
+        <button class="btn btn-primary" type="submit">Calculate</button>
     </form>
-    {# {% endcomment %} #}
 {% endblock %}

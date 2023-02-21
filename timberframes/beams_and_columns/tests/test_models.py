@@ -60,7 +60,7 @@ class WoodTypeTests(TestCase):
 
     def test_wood_type_create_view(self):
         response = self.client.post(
-            reverse("wood_type_new"),
+            reverse("wood_type_form"),
             {
                 "wood_name": "Red Oak",
                 "lumber_type": "log",

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+
 {% block content %}
   <h1>Edit {{wood_type.wood_name}}</h1>
   <form action="" method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <button class="btn btn-success" type="submit">Update</button>
+    <button class="btn btn-primary" type="submit">Update</button> | <button href="{% url 'wood_type_detail' wood_type.pk %}" class="btn btn-primary">Cancel</button>
   </form>
-  <a href="{% url 'wood_type_detail' wood_type.pk %}">Cancel</a>
 {% endblock content %}

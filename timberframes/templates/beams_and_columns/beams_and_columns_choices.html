@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Beam and Column Calculator{% endblock %}
+
+{% block content %}
+  <h1>More Information About the Structure</h1>
+  <form class="form-vertical" method="post" action="" >
+      {% csrf_token %}
+      {# {{ form|crispy }} #}
+      {% for subcategory in form %}
+        {% if subcategory not in ['user_selected_support_type'] %}
+          <p>{{subcategory}}</p>
+        {% endif %}
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Calculate</button>
+  </form>
+{% endblock content %}

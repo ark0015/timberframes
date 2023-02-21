@@ -15,16 +15,24 @@ class BeamAndColumnForm(ModelForm):
             "wood_type",
             # "lumber_type",
             # "lumber_grade",
+            "user_selected_support_type",
             "breadth",
             "depth",
+            "length",
         ]
         labels = {
-            "wood_type": _("Wood Type"),
+            "wood_type": _("What type of wood are you using?"),
             # "lumber_type": _("Lumber Type"),
             # "lumber_grade": _("Grade"),
             # "size": _("Size"),
-            "breadth": _("Breadth of the Wood"),
-            "depth": _("Depth of the Wood"),
+            "user_selected_support_type": _(
+                "What type of support are you looking to stress test?"
+            ),
+            "breadth": _("What is the breadth of your support?"),
+            "depth": _("What is the depth of your support?"),
+            "length": _(
+                "What is the unsupported span of your system (vertical or horizontal)?"
+            ),
         }
 
 

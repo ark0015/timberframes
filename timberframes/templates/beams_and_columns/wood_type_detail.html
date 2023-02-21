@@ -12,6 +12,5 @@
     {% endif %}
   {% endif %}
 {% endfor %}
-<a href="{% url 'wood_type_edit' wood_type.pk %}">+ Edit Wood Type</a>
-<p><a href="{% url 'wood_type_delete' wood_type.pk %}">+ Delete Wood Type</a></p>
+<a href="{% url 'wood_type_edit' wood_type.pk %}" class="btn btn-primary">Edit Wood Type</a> | <a href="{% url 'wood_type_delete' wood_type.pk %}" class="btn btn-primary">Delete Wood Type</a>
 {% endblock content %}

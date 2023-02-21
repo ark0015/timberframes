@@ -62,20 +62,13 @@ class BeamAndColumnFormView(CreateView):
     model = Beams_and_Columns
     form_class = BeamAndColumnForm
     template_name = "pages/home.html"
-    # slug_field = "Wood_Type"
-    # slug_url_kwarg = "Wood_Type"
-    # context_object_name = "wood_type"
+    # success_url = reverse_lazy('beams_and_columns_results')
+    # slug_field = "beams_and_columns"
+    # slug_url_kwarg = "beams_and_columns"
+    # context_object_name = "beams_and_columns"
 
 
-class BeamAndColumnUpdateView(UpdateView):
+class BeamAndColumnResultsView(DetailView):
     model = Beams_and_Columns
-    form_class = BeamAndColumnForm
-    fields = (
-        "__all__"  # Not recommended (potential security issue if more fields added)
-    )
-
-
-class BeamAndColumnDeleteView(DeleteView):
-    model = Beams_and_Columns
-    form_class = BeamAndColumnForm
-    success_url = reverse_lazy("")
+    template_name = "beams_and_columns/beams_and_columns_results.html"
+    # success_url = reverse_lazy("beams_and_columns_results")

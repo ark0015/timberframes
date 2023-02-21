@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+
 {% block content %}
   <h1>New Wood Type</h1>
-  <form class="form-vertical" method="post" action="{% url 'wood_type_list' %}">{% csrf_token %}
+  <form class="form-vertical" method="post" action="{% url 'wood_type_list' %}">
+    {% csrf_token %}
     {{form|crispy}}
-    <button class="btn btn-success" type="submit">Save</button>
+    <button class="btn btn-primary" type="submit">Save</button>
   </form>
 {% endblock %}

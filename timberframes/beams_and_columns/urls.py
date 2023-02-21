@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     BeamAndColumnFormView,
+    BeamAndColumnResultsView,
     WoodTypeDeleteView,
     WoodTypeDetailView,
     WoodTypeFormView,
@@ -12,10 +13,20 @@ from .views import (
 urlpatterns = [
     # path("", view=WoodTypeListView.as_view(), name="home"),
     path("", view=BeamAndColumnFormView.as_view(), name="home"),
+    path(
+        "results/<int:pk>/",
+        view=BeamAndColumnResultsView.as_view(),
+        name="beams_and_columns_results",
+    ),
+    path(
+        "results/<int:pk>/",
+        view=BeamAndColumnResultsView.as_view(),
+        name="beams_and_columns_results",
+    ),
     # path("wood_type", view=WoodTypeFormView.as_view(), name="wood_type"),
     # path("wood_type/", view=WoodTypeFormView.as_view(), name="wood_type"),
     path("wood_type/", view=WoodTypeListView.as_view(), name="wood_type_list"),
-    path("wood_type/new", view=WoodTypeFormView.as_view(), name="wood_type_new"),
+    path("wood_type/new", view=WoodTypeFormView.as_view(), name="wood_type_form"),
     path(
         "wood_type/<int:pk>/",
         WoodTypeDetailView.as_view(),
