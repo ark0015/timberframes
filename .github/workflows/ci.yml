@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Make envfile
-        uses: SpicyPizza/create-envfile@v1.3
+        uses: SpicyPizza/create-envfile@v2.0
         with:
           envkey_DEBUG: false
           envkey_USE_DOCKER: yes
